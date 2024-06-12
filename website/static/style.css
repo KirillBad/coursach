@@ -173,7 +173,6 @@ select {
     word-wrap: break-word;
 }
 
-
 .grid-user-data {
     display: grid;
     grid-template-rows: 60px 60px;
