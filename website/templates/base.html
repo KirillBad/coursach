@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../static/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Geologica:wght,SHRP@100..900,100&display=swap" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <title>TARO.AI</title>
+</head>
+<body>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+   {% for category, message in messages %}
+    {% if category == 'error' %}
+      <div class="popup">
+        <img src="../static/img/cross.png" alt="popup-cross">
+        <p>{{ message }}</p>
+        <button class="popup-close">Хорошо</button>
+      </div>
+    {% endif %}
+   {% endfor %}
+  {% endwith %}
+  {% block content %}
+  {% endblock %}
+  <script>
+    $(document).ready(function() {
+        $('.popup').each(function() {
+              const popup = $(this);
+              popup.addClass('open-popup');
+          });
+
+        $(document).on('click', '.popup-close', function() {
+            $(this).closest('.popup').removeClass('open-popup');
+        });
+    });
+  </script>
+</body>
+</html>
