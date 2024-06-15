@@ -65,6 +65,9 @@ submit_btns.forEach(btn => {
             });
         }
 
+        // Trigger animations only after all cards are added to the DOM
+        triggerCardAnimations();
+
         while (true) {
             const { done, value } = await reader.read();
             output += new TextDecoder().decode(value);
@@ -94,4 +97,12 @@ async function preloadImages(cards) {
         });
     });
     await Promise.all(imagePromises);
+}
+
+function triggerCardAnimations() {
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+        // Add a class to trigger CSS animations
+        card.classList.add('animate-card');
+    });
 }
