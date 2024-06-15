@@ -6,13 +6,9 @@ const card_container = document.querySelector('.card-container');
 const grid_after_answer = document.querySelector('.grid-after-answer');
 const new_question = document.querySelector('.new_question');
 
-submit_btns.forEach(btn => {
+submit_btns.forEach(btn =>
     btn.addEventListener("click", async (e) => {
         e.preventDefault();
-
-        grid_after_answer.style.display = 'none';
-        answer.innerHTML = ``;
-        card_container.innerHTML = ``;
 
         const response = await fetch("/answer", {
             method: "POST",
@@ -26,7 +22,7 @@ submit_btns.forEach(btn => {
             flashContainer.classList.add('popup');
             flashContainer.innerHTML = `
                 <img src="../static/img/cross.webp" alt="popup-cross">
-                <p>${result.message}</p>
+                  <p>${result.message}</p>
                 <button class="popup-close">Хорошо</button>
             `;
             document.body.appendChild(flashContainer);
@@ -41,6 +37,9 @@ submit_btns.forEach(btn => {
             return;
         }
 
+        grid_after_answer.style.display = 'none';
+        answer.innerHTML = ``
+
         const reader = response.body.getReader();
         let output = "";
 
@@ -48,63 +47,52 @@ submit_btns.forEach(btn => {
         const text = new TextDecoder().decode(value);
         const json = JSON.parse(text);
 
+        card_container.innerHTML = ``
+
         if (json.cards) {
             json.cards.forEach(card => {
                 const cardElement = document.createElement('div');
-                cardElement.classList.add('card');
-                cardElement.innerHTML = `
-                    <div class="front">
-                        <img src="../static/img/back.webp" alt="Front Image">
-                    </div>
-                    <div class="back">
-                        <img src="../static/cards/${card}.webp" alt="${card}" class="front-img" style="display: none;">
-                    </div>
-                `;
-                card_container.appendChild(cardElement);
-            });
+                cardElement.className = 'card d-none';
 
-            // Preload the front images and then display them
-            preloadImages(json.cards).then(() => {
-                const frontImgs = document.querySelectorAll('.front-img');
-                frontImgs.forEach(img => {
-                    img.style.display = 'block';
-                });
-                triggerCardAnimations();
+                const frontDiv = document.createElement('div');
+                frontDiv.className = 'front';
+                const frontImg = document.createElement('img');
+                frontImg.src = '../static/img/back.webp';
+                frontImg.alt = 'Front Image';
+                frontDiv.appendChild(frontImg);
+
+                const backDiv = document.createElement('div');
+                backDiv.className = 'back';
+                const backImg = document.createElement('img');
+                backImg.src = `../static/cards/${card}.webp`;
+                backImg.alt = card;
+                backImg.onload = () => {
+                    cardElement.classList.remove('d-none');
+                };
+                backDiv.appendChild(backImg);
+
+                cardElement.appendChild(frontDiv);
+                cardElement.appendChild(backDiv);
+
+                card_container.appendChild(cardElement);
             });
         }
 
         while (true) {
             const { done, value } = await reader.read();
-            if (done) break;
             output += new TextDecoder().decode(value);
             answer.innerHTML = output;
-        }
 
-        grid_after_answer.style.display = 'grid';
-    });
-});
+            if (done) {
+                grid_after_answer.style.display = 'grid';
+                return;
+            }
+        }
+    })
+)
 
 new_question.addEventListener('click', (e) => {
-    input.value = '';
-    input.focus();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-});
-
-async function preloadImages(cards) {
-    const imagePromises = cards.map(card => {
-        return new Promise((resolve, reject) => {
-            const img = new Image();
-            img.src = `../static/cards/${card}.webp`;
-            img.onload = resolve;
-            img.onerror = reject;
-        });
-    });
-    await Promise.all(imagePromises);
-}
-
-function triggerCardAnimations() {
-    const cards = document.querySelectorAll('.card');
-    cards.forEach(card => {
-        card.classList.add('animate-card');
-    });
-}
+  input.value = '';
+  input.focus();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+})

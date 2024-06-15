@@ -154,6 +154,10 @@ footer a {
     height: 100%;
 }
 
+.d-none {
+    display: none;
+}
+
 .back {
     transform: rotateY(180deg);
 }
