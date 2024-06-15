@@ -49,7 +49,6 @@ submit_btns.forEach(btn => {
         const json = JSON.parse(text);
 
         if (json.cards) {
-            await preloadImages(json.cards); // Preload images before displaying them
             json.cards.forEach(card => {
                 const cardElement = document.createElement('div');
                 cardElement.classList.add('card');
@@ -58,26 +57,30 @@ submit_btns.forEach(btn => {
                         <img src="../static/img/back.webp" alt="Front Image">
                     </div>
                     <div class="back">
-                        <img src="../static/cards/${card}.webp" alt="${card}">
+                        <img src="../static/cards/${card}.webp" alt="${card}" class="front-img" style="display: none;">
                     </div>
                 `;
                 card_container.appendChild(cardElement);
             });
-        }
 
-        // Trigger animations only after all cards are added to the DOM
-        triggerCardAnimations();
+            // Preload the front images and then display them
+            preloadImages(json.cards).then(() => {
+                const frontImgs = document.querySelectorAll('.front-img');
+                frontImgs.forEach(img => {
+                    img.style.display = 'block';
+                });
+                triggerCardAnimations();
+            });
+        }
 
         while (true) {
             const { done, value } = await reader.read();
+            if (done) break;
             output += new TextDecoder().decode(value);
             answer.innerHTML = output;
-
-            if (done) {
-                grid_after_answer.style.display = 'grid';
-                return;
-            }
         }
+
+        grid_after_answer.style.display = 'grid';
     });
 });
 
@@ -102,7 +105,6 @@ async function preloadImages(cards) {
 function triggerCardAnimations() {
     const cards = document.querySelectorAll('.card');
     cards.forEach(card => {
-        // Add a class to trigger CSS animations
         card.classList.add('animate-card');
     });
 }
