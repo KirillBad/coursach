@@ -1,0 +1,24 @@
+{% macro payment_options_header(page_name) %}
+  <div class="pay-once-header-text">
+    <h1>Оплата</h1>
+    <p>Получите <span>товар на свой баланс</span> сразу после совершения транзакции!</p>
+  </div>
+  <div class="payments-option-btn">
+    <a href="{{ url_for('payments.pay_once') }}"
+      {% if page_name == "/pay-once" %}
+        style="
+            background-color: var(--color-main);
+            color: var(--color-text);
+            border: 3px solid var(--color-middle);
+        "
+      {% endif %}>Купить расклады</a>
+    <a href="{{ url_for('payments.pay_subscription') }}"
+      {% if page_name == "/pay-subscription" %}
+          style="
+              background-color: var(--color-main);
+              color: var(--color-text);
+              border: 3px solid var(--color-middle);
+          "
+      {% endif %}>Подписка</a>
+  </div>
+{% endmacro %}

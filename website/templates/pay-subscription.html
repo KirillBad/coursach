@@ -1,0 +1,40 @@
+{% extends "base.html" %} 
+{% block content %}
+{% from 'payment-macros.html' import payment_options_header %}
+{{ payment_options_header(request.path) }}
+  <div class="grid-payment-option">
+    <div class="ten-requests">
+      <div class="container-payment-card">
+          <h4>Малая</h4>
+          <div>
+            <h3>399₽</h3>
+            <p>7 дней</p>
+          </div>
+          <h5>Нет выгоды</h5>
+          <a class="btn-buy">Купить</a>
+      </div>
+    </div>
+    <div class="fifty-requests">
+      <div class="container-payment-card">
+        <h3>ПРЕМИАЛЬНАЯ</h3>
+        <div>
+          <h1>599₽</h1>
+          <p>30 дней</p>
+        </div>
+        <h2>Выгода 65%</h2>
+        <a class="btn-buy">Купить</a>
+      </div>
+    </div>
+    <div class="thirty-requests">
+      <div class="container-payment-card">
+        <h4>Базовая</h4>
+        <div>
+          <h3>499₽</h3>
+          <p>14 дней</p>
+        </div>
+        <h5>Выгода 37%</h5>
+        <a class="btn-buy">Купить</a>
+      </div>
+    </div>
+  </div>
+{% endblock %}

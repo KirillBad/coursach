@@ -1,124 +1,44 @@
 {% extends "base.html" %} 
 {% block content %}
-<header>
-  <img src="../static/img/crystal-ball_1f52e.png" alt="logo">
-  <div class="greetings">
-    <h1>ТАРО.<span>AI</span></h1>
-    <p>Добро пожаловать</p>
-  </div>
-  <h2>Задай свой вопрос <span>картам</span></h2>
-</header>
-<section class="asking">
-  <form method="POST" class="sendAsk">
-    <textarea id="question" name="question"></textarea>
-    <div class="select-dropdown">
-      <select id="card_number" name="card_number">
-        <option value="2">2 КАРТЫ</option>
-        <option value="3">3 КАРТЫ</option>
-        <option value="1">1 КАРТА</option>
-      </select>
+    <form method="POST" class="grid-send-ask">
+      <textarea class="question" name="question"></textarea>
+      <div class="select-dropdown">
+        <select class="cards_number" name="cards_number">
+          <option value="1">1 КАРТА</option>
+          <option value="2">2 КАРТЫ</option>
+          <option value="3">3 КАРТЫ</option>
+        </select>
+      </div>
+      <button class="submit-btn" type="submit"><svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="32px" fill="#000"><path d="M120-160v-640l760 320-760 320Zm80-120 474-200-474-200v140l240 60-240 60v140Zm0 0v-400 400Z"/></svg></button>
+    </form>
+    <div class="card-container"></div>
+    <div class="grid-answer">
+      <div class="answer"></div>
     </div>
-    <button id="submit-btn" type="submit"><svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="32px" fill="#000"><path d="M120-160v-640l760 320-760 320Zm80-120 474-200-474-200v140l240 60-240 60v140Zm0 0v-400 400Z"/></svg></button>
-  </form>
-</section>
-<section class="answering"></section>
-  <div class="card-container" id="cards">
-  </div>
-  <div class="grid-answer">
-    <div id="answer"></div>
-  </div>
-  <div class="grid-after-answer" id="grid-after-answer" style="display: none;">
-    <button class="child" id="submit-btn">Повторить</button>
-    <button class="child" id="new_question">Новый вопрос</button>
-  </div>
-  <div class="grid-user-data">
-    <p class="child">
-      {% if user.is_authenticated %}
-       Баланс раскладов: {{ user.balance }}
-      {% else %}
-        Баланс раскладов: 2
-      {% endif %}
-    </p>
-    <p class="child">
-      {% if user.is_authenticated %}
-        {{ user.login }}
-      {% else %}
-        Не авторизован
-      {% endif %}
-    </p>
-    <button class="child">Пополнить Баланс</button>
-    <a href="{{ url_for('auth.authorization') }}" class="child">
-      {% if user.is_authenticated %}
-        Выйти
-      {% else %}
-        Войти
-      {% endif %}
-    </a>
-  </div>
-</section>
-<script>
-    const submit_btns = document.querySelectorAll("#submit-btn");
-    const input = document.getElementById('question');
-    const card_number = document.getElementById('card_number');
-    const answer = document.getElementById('answer');
-    const card_container = document.getElementById('cards');
-    const grid_after_answer = document.getElementById('grid-after-answer');
-    const new_question = document.getElementById('new_question');
-
-    submit_btns.forEach(btn => 
-        btn.addEventListener("click", async (e) => {
-            e.preventDefault();
-
-            grid_after_answer.style.display = 'none';
-            answer.innerHTML = ``
-
-            const response = await fetch("/answer", {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({message: input.value, card_number: card_number.value})
-            });
-
-            const reader = response.body.getReader();
-            let output = "";
-
-            const { done, value } = await reader.read();
-            const text = new TextDecoder().decode(value);
-            const json = JSON.parse(text);
-
-            card_container.innerHTML = ``
-
-            if (json.cards) {
-                json.cards.forEach(card => {
-                    card_container.innerHTML += `
-                        <div class="card">
-                            <div class="front">
-                                <img src="../static/img/back2.png" alt="Front Image">
-                            </div>
-                            <div class="back">
-                                <img src="../static/cards/${card}.png" alt="${card}">
-                            </div>
-                        </div>
-                    `;
-                });
-            }
-
-            while (true) {
-                const { done, value } = await reader.read();
-                output += new TextDecoder().decode(value);
-                answer.innerHTML = output;
-
-                if (done) {
-                    grid_user_data.style.display = 'grid';
-                    return;
-                }
-            }
-        })
-    )
-
-    new_question.addEventListener('click', (e) => {
-      input.value = '';
-      input.focus();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    })
-</script>
+    <div class="grid-after-answer" style="display: none;">
+      <button class="submit-btn">Повторить</button>
+      <button class="new_question">Новый вопрос</button>
+    </div>
+    <div class="grid-user-data">
+      <p>
+        {% if user.is_authenticated %}
+         Баланс раскладов: {{ user.balance }}
+        {% else %}
+          Баланс раскладов: {{ session['balance'] }}
+        {% endif %}
+      </p>
+      <p>
+        {% if user.is_authenticated %}
+          {{ user.login }}
+        {% else %}
+          Не авторизован
+        {% endif %}
+      </p>
+      <a href="{{ url_for('payments.pay_once') }}" class="deposit-money-a">Пополнить Баланс</a>
+        {% if user.is_authenticated %}
+          <a href="{{ url_for('auth.logout') }}">Выйти</a>
+        {% else %}
+          <a href="{{ url_for('auth.authorization') }}">Войти</a>
+        {% endif %}
+    </div>
 {% endblock %}

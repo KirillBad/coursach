@@ -12,17 +12,33 @@ def registration():
     if request.method == "POST":
         login = request.form.get("login")
         password = request.form.get("password")
-        passwordConfirm = request.form.get("passwordConfirm")
+        password_confirm = request.form.get("passwordConfirm")
 
-        if password != passwordConfirm:
+        if password != password_confirm:
+            print("1")
             flash("Пароли не совпадают", category="error")
+            return redirect(request.url)
+
+        user = db.session.scalars(
+            db.select(User).where(User.login == login)
+        ).one_or_none()
+
+        if user is not None:
+            if user.login == login:
+                flash("Логин занят", category="error")
 
         if len(login) > 0 and len(password) > 0:
             new_user = User(
-                login=login, password_hash=generate_password_hash(password), role_id=1
+                login=login, password_hash=generate_password_hash(password), role_id=2
             )
-            db.session.add(new_user)
-            db.session.commit()
+            try:
+                db.session.add(new_user)
+                db.session.commit()
+                login_user(new_user, remember=True)
+            except Exception as e:
+                db.session.rollback()
+                flash(f"{e}", category="error")
+                return redirect(url_for("auth.registration"))
             return redirect(url_for("home.home"))
 
     return render_template("registration.html")
