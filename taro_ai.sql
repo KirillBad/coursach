@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 12, 2024 at 06:42 PM
+-- Generation Time: Jun 16, 2024 at 07:53 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -24,6 +24,20 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `payments`
+--
+
+CREATE TABLE `payments` (
+  `id` varchar(36) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `status` varchar(64) NOT NULL,
+  `amount` varchar(16) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `role`
 --
 
@@ -37,8 +51,8 @@ CREATE TABLE `role` (
 --
 
 INSERT INTO `role` (`id`, `name`) VALUES
-(1, 'admin'),
-(2, 'user');
+(2, 'admin'),
+(1, 'user');
 
 -- --------------------------------------------------------
 
@@ -48,23 +62,27 @@ INSERT INTO `role` (`id`, `name`) VALUES
 
 CREATE TABLE `user` (
   `id` int(11) NOT NULL,
-  `login` varchar(32) NOT NULL,
-  `password_hash` varchar(300) NOT NULL,
+  `first_name` varchar(128) DEFAULT NULL,
+  `last_name` varchar(128) DEFAULT NULL,
+  `username` varchar(128) NOT NULL,
+  `photo_url` varchar(128) DEFAULT NULL,
+  `auth_date` varchar(128) DEFAULT NULL,
+  `hash` varchar(128) NOT NULL,
   `balance` int(11) NOT NULL,
+  `subsciption_end` timestamp NULL DEFAULT NULL,
   `role_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `user`
---
-
-INSERT INTO `user` (`id`, `login`, `password_hash`, `balance`, `role_id`) VALUES
-(1, 'kirillbad', 'scrypt:32768:8:1$T7aWszDpoq1TphZm$3d780ce93e1722a7208431e3a878c1b93d17c90209672bb2e5259670037e66a1c3cdb5e86670a2a1b379033effeea49924bcc60f1680ca7746c0dc81584ca308', 10, 1),
-(2, 'kirillbad2004@yandex.ru', 'scrypt:32768:8:1$LndI77Rg2gd5P5MD$2e89a6f78f1c3e39e8499c16f7f3aac9b7a0c86d9d5ccfd7d5703bbc13c0782649ce57dff85efa235c05e8a65a4bc83c968406d2f67612c00566314d31163434', 10, 1);
-
---
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `payments`
+--
+ALTER TABLE `payments`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `role`
@@ -78,7 +96,6 @@ ALTER TABLE `role`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `login` (`login`),
   ADD KEY `role_id` (`role_id`);
 
 --
@@ -89,17 +106,23 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `role`
 --
 ALTER TABLE `role`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=486725257;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `payments`
+--
+ALTER TABLE `payments`
+  ADD CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
 --
 -- Constraints for table `user`
