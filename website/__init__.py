@@ -1,11 +1,9 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-from flask_migrate import Migrate
 from . import config
 
 db = SQLAlchemy()
-migrate = Migrate()
 
 
 def create_app():
@@ -17,7 +15,6 @@ def create_app():
         f"mysql+pymysql://{config.DB_USER}:{config.DB_PASSWORD}@{config.DB_HOST}/{config.DB_NAME}"
     )
     db.init_app(app)
-    migrate.init_app(app, db)
 
     from .home import home_bp
     from .auth import auth_bp

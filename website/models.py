@@ -24,7 +24,9 @@ class User(db.Model, UserMixin):
     role_id: Mapped[int] = mapped_column(db.ForeignKey("role.id"))
 
     role: Mapped["Role"] = db.relationship(back_populates="users", uselist=False)
-    payments: Mapped[list["Payments"]] = db.relationship(back_populates="user", uselist=True)
+    payments: Mapped[list["Payments"]] = db.relationship(
+        back_populates="user", uselist=True
+    )
 
 
 class Payments(db.Model):
