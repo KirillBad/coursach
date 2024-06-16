@@ -66,7 +66,7 @@ def answer():
     def generate():
         yield json.dumps({"cards": random_cards, "balance": balance})
         stream = client.chat.completions.create(
-            model="gpt-3.5-turbo-16k",
+            model="gpt-4o",
             messages=[
                 {
                     "role": "system",
