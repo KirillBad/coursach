@@ -11,6 +11,7 @@ migrate = Migrate()
 def create_app():
     app = Flask(__name__)
     app.config["SECRET_KEY"] = config.SECRET_KEY
+    app.config["TELEGRAM_BOT_TOKEN"] = config.TELEGRAM_BOT_TOKEN
     app.config["UPLOAD_FOLDER"] = "website/static"
     app.config["SQLALCHEMY_DATABASE_URI"] = (
         f"mysql+pymysql://{config.DB_USER}:{config.DB_PASSWORD}@{config.DB_HOST}/{config.DB_NAME}"

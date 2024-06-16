@@ -5,10 +5,13 @@ const answer = document.querySelector('.answer');
 const card_container = document.querySelector('.card-container');
 const grid_after_answer = document.querySelector('.grid-after-answer');
 const new_question = document.querySelector('.new_question');
+const balance = document.querySelector('.balance');
 
 submit_btns.forEach(btn =>
     btn.addEventListener("click", async (e) => {
         e.preventDefault();
+
+        submit_btns.forEach(btn => btn.disabled = true);
 
         const response = await fetch("/answer", {
             method: "POST",
@@ -46,8 +49,13 @@ submit_btns.forEach(btn =>
         const { done, value } = await reader.read();
         const text = new TextDecoder().decode(value);
         const json = JSON.parse(text);
+        console.log(json)
 
         card_container.innerHTML = ``
+
+        if (json.balance) {
+            balance.innerText = "Баланс раскладов: " + json.balance
+        }
 
         if (json.cards) {
             json.cards.forEach(card => {
@@ -64,12 +72,18 @@ submit_btns.forEach(btn =>
                 const backDiv = document.createElement('div');
                 backDiv.className = 'back';
                 const backImg = document.createElement('img');
-                backImg.src = `../static/cards/${card}.webp`;
-                backImg.alt = card;
+                backImg.src = `../static/cards/${card.name}.webp`;
+                backImg.alt = card.name;
+
+                if (card.reversed) {
+                    backImg.style.transform = 'rotate(180deg)';
+                }
+
                 backImg.onload = () => {
                     cardElement.classList.remove('d-none');
                 };
                 backDiv.appendChild(backImg);
+
 
                 cardElement.appendChild(frontDiv);
                 cardElement.appendChild(backDiv);
@@ -77,7 +91,6 @@ submit_btns.forEach(btn =>
                 card_container.appendChild(cardElement);
             });
         }
-
         while (true) {
             const { done, value } = await reader.read();
             output += new TextDecoder().decode(value);
@@ -85,6 +98,7 @@ submit_btns.forEach(btn =>
 
             if (done) {
                 grid_after_answer.style.display = 'grid';
+                submit_btns.forEach(btn => btn.disabled = false);
                 return;
             }
         }

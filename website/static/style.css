@@ -180,7 +180,7 @@ footer a {
 .grid-user-data {
     display: grid;
     grid-template-rows: 60px 60px;
-    grid-template-columns: 220px 150px;
+    grid-template-columns: 220px 197px;
     grid-gap: 16px;
     align-items: stretch;
     justify-items: stretch;
@@ -473,6 +473,10 @@ footer a {
 .oferta h1,
 .oferta h2 {
     margin-top: calc(var(--index) * 0.6);
+}
+
+#telegram-login-gpttaro_bot {
+    margin-top: 12px;
 }
 
 @keyframes card-flip {

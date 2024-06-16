@@ -11,7 +11,7 @@
             <p>7 дней</p>
           </div>
           <h5>Нет выгоды</h5>
-          <a class="btn-buy">Купить</a>
+          <a class="btn-buy" href="{{ url_for("payments.payment_creation", value=399, type=2, quantity=7) }}">Купить</a>
       </div>
     </div>
     <div class="fifty-requests">
@@ -22,7 +22,7 @@
           <p>30 дней</p>
         </div>
         <h2>Выгода 65%</h2>
-        <a class="btn-buy">Купить</a>
+        <a class="btn-buy" href="{{ url_for("payments.payment_creation", value=599, type=2, quantity=30) }}">Купить</a>
       </div>
     </div>
     <div class="thirty-requests">
@@ -33,7 +33,7 @@
           <p>14 дней</p>
         </div>
         <h5>Выгода 37%</h5>
-        <a class="btn-buy">Купить</a>
+        <a class="btn-buy" href="{{ url_for("payments.payment_creation", value=499, type=2, quantity=14) }}">Купить</a>
       </div>
     </div>
   </div>
