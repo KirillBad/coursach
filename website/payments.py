@@ -18,14 +18,14 @@ payments_bp = Blueprint("payments", __name__)
 
 
 @payments_bp.route("/pay-once", methods=["GET", "POST"])
-@decorators.role_required("user")
+@decorators.role_required("user", "admin")
 def pay_once():
 
     return render_template("pay-once.html")
 
 
 @payments_bp.route("/pay-subscription", methods=["GET", "POST"])
-@decorators.role_required("user")
+@decorators.role_required("user", "admin")
 def pay_subscription():
 
     return render_template("pay-subscription.html")
