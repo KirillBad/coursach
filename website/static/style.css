@@ -26,7 +26,7 @@ select {
 select:hover,
 .a-hover:hover,
 button:hover {
-    transform: scale(1.1);
+    transform: scale(1.07);
     box-shadow: 0 0 25px 2px var(--color-call-to-action);
     cursor: pointer;
 }
@@ -136,6 +136,8 @@ footer a {
     grid-template-rows: 50px;
     grid-gap: calc(var(--index) * 0.5);
     margin: 0 calc(var(--index) * 1) calc(var(--index) * 1) calc(var(--index) * 1);
+    margin-right: 10px;
+    margin-left: 10px;
 }
 .card-container {
     height: calc(var(--index) * 11.5);
@@ -176,7 +178,7 @@ footer a {
 
 .grid-answer {
     display: grid;
-    grid-template-columns: 600px;
+    grid-template-columns: minmax(300px, 600px);
     justify-items: center;
     align-items: center;
     text-align: center;
@@ -197,6 +199,8 @@ footer a {
     align-items: stretch;
     justify-items: stretch;
     margin-bottom: calc(var(--index) * 3);
+    margin-right: 10px;
+    margin-left: 10px;
 }
 
 .grid-user-data p {
@@ -512,24 +516,27 @@ canvas {
 
 .logo-animate {
     stroke-dasharray: 522;
-    stroke-dashoffset: 522;
-    animation: logo 8s ease-in infinite;
+    stroke-dashoffset: 0;
+    animation: logo 12s ease-in infinite;
     animation-delay: 1s;
     animation-fill-mode: forwards;
 }
 
 @keyframes logo {
     0% {
-        stroke-dashoffset: 522;
+        stroke-dashoffset: 0;
     }
     30% {
         stroke-dashoffset: 0;
+    }
+    50% {
+        stroke-dashoffset: 522;
     }
     70%{
         stroke-dashoffset: 0;
     }
     100% {
-        stroke-dashoffset: 522;
+        stroke-dashoffset: 0;
     }
 }
 
