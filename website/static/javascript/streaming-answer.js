@@ -7,6 +7,7 @@ const grid_after_answer = document.querySelector('.grid-after-answer');
 const new_question = document.querySelector('.new_question');
 const balance = document.querySelector('.balance');
 
+
 submit_btns.forEach(btn =>
     btn.addEventListener("click", async (e) => {
         e.preventDefault();
@@ -24,9 +25,9 @@ submit_btns.forEach(btn =>
             const flashContainer = document.createElement('div');
             flashContainer.classList.add('popup');
             flashContainer.innerHTML = `
-                <img src="../static/img/cross.webp" alt="popup-cross">
+                <img src="/static/cross.webp" alt="popup-cross">
                   <p>${result.message}</p>
-                <button class="popup-close">Хорошо</button>
+                <a href='/' class="popup-close a-hover">Хорошо</button>
             `;
             document.body.appendChild(flashContainer);
 
@@ -49,7 +50,6 @@ submit_btns.forEach(btn =>
         const { done, value } = await reader.read();
         const text = new TextDecoder().decode(value);
         const json = JSON.parse(text);
-        console.log(json)
 
         card_container.innerHTML = ``
 
@@ -65,7 +65,7 @@ submit_btns.forEach(btn =>
                 const frontDiv = document.createElement('div');
                 frontDiv.className = 'front';
                 const frontImg = document.createElement('img');
-                frontImg.src = '../static/img/back.webp';
+                frontImg.src = '../static/back.webp';
                 frontImg.alt = 'Front Image';
                 frontDiv.appendChild(frontImg);
 

@@ -8,7 +8,7 @@
 --index: calc(1vh + 1vw);
 --color-text: whitesmoke;
 --color-middle: #cd56d6;
---color-call-to-action: #c93;
+--color-call-to-action: #cc9933;
 --color-main: #000;
 }
 
@@ -20,6 +20,15 @@ select {
     border: none;
     text-decoration: none;
     font: normal bold 1em Helvetica, sans-serif;
+    transition: transform 0.4s ease-out, box-shadow 0.3s ease-out;
+}
+
+select:hover,
+.a-hover:hover,
+button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 25px 2px var(--color-call-to-action);
+    cursor: pointer;
 }
 
 a {
@@ -27,6 +36,7 @@ a {
     justify-content: center;
     align-items: center;
     text-decoration: none;
+    transition: transform 0.4s ease-out, box-shadow 0.3s ease-out;
 }
 
 select {
@@ -37,19 +47,22 @@ span {
     color: var(--color-middle);
 }
 
-button:hover {
-    cursor: pointer;
-}
-
 textarea, input {
     resize: none;
     background-color: var(--color-main);
     border-radius: 10px;
-    border: 2px solid var(--color-middle);
+    border: 3px solid var(--color-middle);
     color: var(--color-text);
     padding: calc(var(--index) * 0.5);
     overflow: hidden;
     font: normal bold 1em Helvetica, sans-serif;
+    outline: none;
+    transition: box-shadow 0.3s ease-out;
+}
+
+textarea:not(:placeholder-shown),
+textarea:focus {
+    box-shadow: 0 0 25px 2px var(--color-call-to-action);
 }
 
 html {
@@ -99,7 +112,7 @@ footer a {
 .grid-header {
     display: grid;
     grid-template-rows: 100px 1fr;
-    grid-template-columns: 100px 1fr;
+    grid-template-columns: 100px 170px;
     justify-items: center;
     align-items: center;
     margin: calc(var(--index) * 1) 0 calc(var(--index) * 1) 0;
@@ -149,7 +162,6 @@ footer a {
 }
 
 .card img {
-    /* box-shadow: 10px 10px 5px 2px rgb(255, 0, 234); */
     width: 100%;
     height: 100%;
 }
@@ -180,7 +192,7 @@ footer a {
 .grid-user-data {
     display: grid;
     grid-template-rows: 60px 60px;
-    grid-template-columns: 220px 197px;
+    grid-template-columns: 130px 2fr;
     grid-gap: 16px;
     align-items: stretch;
     justify-items: stretch;
@@ -296,6 +308,9 @@ footer a {
     padding: 0 30px 20px;
     visibility: hidden;
     transition: transform 0.4s, top 0.4s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .open-popup {
@@ -316,8 +331,16 @@ footer a {
 }
 
 .popup button {
-    height:  40px;
+    height: 40px;
     width: 80px;
+}
+
+.popup-close {
+    color: var(--color-main);
+    background-color: var(--color-middle);
+    width: 50%;
+    padding: 5px;
+    border-radius: 10px;
 }
 
 .grid-admin-panel {
@@ -477,6 +500,35 @@ footer a {
 
 #telegram-login-gpttaro_bot {
     margin-top: 12px;
+}
+
+canvas {
+    height: 98vh;
+    position: absolute;
+    z-index: -1;
+}
+
+.logo-animate {
+    stroke-dasharray: 522;
+    stroke-dashoffset: 522;
+    animation: logo 8s ease-in infinite;
+    animation-delay: 1s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes logo {
+    0% {
+        stroke-dashoffset: 522;
+    }
+    30% {
+        stroke-dashoffset: 0;
+    }
+    70%{
+        stroke-dashoffset: 0;
+    }
+    100% {
+        stroke-dashoffset: 522;
+    }
 }
 
 @keyframes card-flip {

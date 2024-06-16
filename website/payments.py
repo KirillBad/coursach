@@ -57,6 +57,7 @@ def payment_creation():
             "type": "redirect",
             "return_url": "https://gpttaro.online/"
         },
+        "capture": True,
         "description": f"{type_to_description[type][quantity]}",
         "metadata": {
             "type": type,
