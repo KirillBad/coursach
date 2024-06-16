@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, redirect, request, flash, url_for
 from flask_login import current_user
 import uuid
 from datetime import datetime, timedelta
-from . import config, db
+from . import config, db, decorators
 from .models import Payments, User
 from yookassa import Configuration, Payment
 from yookassa.domain.notification import WebhookNotificationEventType, WebhookNotificationFactory
@@ -13,13 +13,16 @@ Configuration.secret_key = config.YOOKASSA_SECRET_KEY
 
 payments_bp = Blueprint("payments", __name__)
 
+
 @payments_bp.route("/pay-once", methods=["GET", "POST"])
+@decorators.role_required('user')
 def pay_once():
 
     return render_template("pay-once.html")
 
 
 @payments_bp.route("/pay-subscription", methods=["GET", "POST"])
+@decorators.role_required('user')
 def pay_subscription():
 
     return render_template("pay-subscription.html")

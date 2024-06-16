@@ -36,7 +36,7 @@
       <div class="popup">
         <img src="{{ url_for('static', filename='cross.webp') }}" alt="popup-cross">
         <p>{{ message }}</p>
-        <a href="{{ url_for("home.home") }}" class="popup-close a-hover">Хорошо</a>
+        <button class="popup-close a-hover">Хорошо</button>
       </div>
     {% endif %}
    {% endfor %}

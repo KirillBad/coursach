@@ -209,6 +209,7 @@ footer a {
     color: var(--color-main);
     border-radius: 10px;
     border: none;
+    padding: 10px;
 }
 
 .deposit-money-a {
@@ -223,7 +224,8 @@ footer a {
     grid-gap: 16px;
     align-items: stretch;
     justify-items: stretch;
-    margin-bottom: 16px;
+    margin-bottom: 40px;
+    margin-right: 19px;
 }
 
 .checkbox {
