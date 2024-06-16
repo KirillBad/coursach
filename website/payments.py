@@ -69,7 +69,6 @@ def payment_creation():
     }, idempotence_key)
 
     confirmation_url = payment.confirmation.confirmation_url
-    print(payment['id'])
 
     new_payment = Payments(id=payment['id'], user_id=current_user.id, status=payment['status'], amount=payment['amount']['value'])
 
